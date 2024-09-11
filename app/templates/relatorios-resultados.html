@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1 class="h3 mb-2 text-gray-800">Resultados</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">       
+        <a href="#" class="btn btn-secondary"><i class="fas fa-download"></i> Gerar Relatório</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered col1-centro col2-direita col3-direita col4-direita col5-direita col6-direita" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th width="10%">Período</th>
+                        <th width="15%">Total de Compras</th>
+                        <th width="15%">Total de Vendas</th>
+                        <th width="15%">Total de Taxas</th>
+                        <th width="15%">Resultado</th>
+                        <th width="10%">Rentabilidade (%)</th>
+                    </tr>
+                </thead>
+                <tbody>                    
+                    {% for resultado in resultados %}
+                    <tr>
+                        <td>{{ resultado.periodo }}</td>
+                        <td>{{ resultado.total_compras | format_moeda }}</td>
+                        <td>{{ resultado.total_vendas | format_moeda }}</td>
+                        <td>{{ resultado.total_taxas | format_moeda }}</td>
+                        <td>{{ resultado.lucro_prejuizo | format_moeda }}</td>
+                        <td>{{ resultado.rentabilidade_percentual | format_porcentagem }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

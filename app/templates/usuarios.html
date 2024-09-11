@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+<div class="container">
+    <h3 class="text-primary mb-4">Usuários</h3>
+
+
+
+    <div class="row">
+        {% for usuario in lista_usuarios %}
+
+        <div class="col-lg-4">
+            <div class="card rounded mb-4 bg-color-gray">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="image pe-3">
+                            <img src="{{ url_for('static', filename='fotos_perfil/{}'.format(usuario.foto_perfil)) }}" class="rounded img-fluid">
+                        </div>
+                        <div class="ml-3 w-100">
+                            <h4 class="mb-0 mt-0">{{ usuario.username }}</h4> <span class="text-secondary">{{ usuario.email }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+<div class="row mt-5">
+
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<div class="container">
+
+
+    <h2 class="text-primary mb-4">Resultado da busca</h2>
+
+
+
+    <div class="card shadow">
+        <div class="card-body">
+            <p> A ação é: <span class="text-primary font-weight">{{ busca_acao }}</span> </p>
+            <p> A data da cotação atual é: {{ data_formatada }}</p>
+
+            <p> O valor da cotação atual é: {{ (cot_formatada) }}</p>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock %}

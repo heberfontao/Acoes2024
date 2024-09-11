@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Carteira</h1>
+    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        class="fas fa-download fa-sm text-white-50"></i> Gerar Relatório</a>
+</div>
+
+<!-- Content Row -->
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Valor Total</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ carteira_valor | format_moeda }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Quantidade de ativos</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ carteira_quantidade }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Rentabilidade</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ carteira_rentabilidade_valor | format_moeda }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Rentabilidade (%)</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ carteira_rentabilidade_percentual | format_porcentagem}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered col1-centro col3-direita col4-direita col5-direita col6-direita col7-direita col8-direita col9-centro" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th width="8%">Ticker</th>
+                        <th>Nome</th>
+                        <th width="8%">Cotação</th>
+                        <th width="8%">Preço médio</th>
+                        <th width="10%">Rentabilidade (%)</th>
+                        <th width="10%">Rentabilidade (R$)</th>
+                        <th width="8%">Quantidade</th>
+                        <th width="10%">Valor</th>
+                        <th width="10%"></th>
+                    </tr>
+                </thead>
+                <tbody>                    
+                    {% for ativo in carteira %}
+                    <tr>
+                        <td>{{ ativo.ticker }}</td>
+                        <td>{{ ativo.nome }}</td>
+                        <td>{{ ativo.preco_atual | format_moeda }}</td>
+                        <td>{{ ativo.valor_medio | format_moeda }}</td>
+                        <td>{{ ativo.rentabilidade_percentual | format_porcentagem }}</td>
+                        <td>{{ ativo.rentabilidade_valor | format_moeda }}</td>
+                        <td>{{ ativo.quantidade }}</td>
+                        <td>{{ ativo.valor | format_moeda }}</td>
+                        <td>
+                            <a class="btn-sm btn btn-info" data-toggle="tooltip" href="#" title="Detalhar"><i class="fa fa-search"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

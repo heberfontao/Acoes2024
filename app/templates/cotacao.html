@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block body %}
+<div class="container">
+  <h3 class="text-primary mb-4">Buscar Cotação das Ações</h3>
+  <div class="row">
+    <div class="col">
+      <form method="POST" action="" class="border p-4 mt-2">
+        {{ form_busca.csrf_token }}
+
+        <fieldset>
+          <div class="form-group">
+            {{ form_busca.data.label(class="form-control-label") }} {% if
+            form_busca.data.errors %} {{
+            form_busca.data(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+              {% for erro in form_busca.data.errors %} {{ erro }} {% endfor
+              %}
+            </div>
+            {% else %} {{ form_busca.data(class="form-control",
+            placeholder="Insira o Ticker") }} {% endif %}
+          </div>
+        </fieldset>
+        {{ form_busca.botao_submit_busca(class="btn btn-primary mt-2") }}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

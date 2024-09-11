@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1 class="h3 mb-2 text-gray-800">Apuração</h1>
+
+<form method="POST" action="" class="">
+    {{ form_apuracao.csrf_token }} 
+        <div class="row">
+            <div class="col-3 col-lg-1">
+                <div class="form-group">
+                    {% if form_apuracao.data.errors %} {{
+                    form_apuracao.data(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for erro in form_apuracao.data.errors %} {{ erro }} {% endfor %}
+                    </div>
+                    {% else %} {{ form_apuracao.data(class="form-control maskPeriodo") }} {% endif %}
+                </div>
+            </div>
+            <div class="col-3">
+                {{ form_apuracao.botao_submit_apuracao(class="btn btn-primary") }}
+            </div>
+        </div>
+</form>
+  
+{% if resultado_por_periodo %}
+<div class="row">
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Compras do mês</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ resultado_por_periodo.total_compras | format_moeda }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Vendas do mês</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ resultado_por_periodo.total_vendas | format_moeda }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            Taxas do mês</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ resultado_por_periodo.total_taxas | format_moeda }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Impostos do mês a pagar</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ resultado_por_periodo.imposto_a_pagar() | format_moeda }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="#" class="btn btn-secondary"><i class="fas fa-download"></i> Gerar Relatório</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered col1-centro col3-direita col4-direita col5-direita" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th width="5%">Ticker</th>
+                        <th width="auto">Nome</th>
+                        <th width="15%">Total de Compras</th>
+                        <th width="15%">Total de Vendas</th>
+                        <th width="15%">Total de Taxas</th>
+                    </tr>
+                </thead>
+                <tbody>                    
+                    {% for resultado in resultados_por_ticker %}
+                    <tr>
+                        <td>{{ resultado.ticker }}</td>
+                        <td>{{ resultado.nome }}</td>
+                        <td>{{ resultado.total_compras | format_moeda }}</td>
+                        <td>{{ resultado.total_vendas | format_moeda }}</td>
+                        <td>{{ resultado.total_taxas | format_moeda }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

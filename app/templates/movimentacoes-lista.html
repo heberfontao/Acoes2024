@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1 class="h3 mb-2 text-gray-800">Movimentações</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a accesskey="A" class="btn btn-primary" data-toggle="modal" data-target="#modalMovimentacao" href="#" id="btnMovimentacaoAdicionar"><i class="fa fa-plus"></i> <u>A</u>dicionar</a>
+        <a href="#" class="btn btn-secondary"><i class="fas fa-download"></i> Gerar Relatório</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered col1-centro col5-direita col6-direita col7-direita col8-direita col9-centro" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th width="8%">Data</th>
+                        <th width="5%">Tipo</th>
+                        <th width="5%">Ticker</th>
+                        <th>Nome</th>
+                        <th width="10%">Valor Unit.</th>
+                        <th width="10%">Quantidade</th>
+                        <th width="10%">Taxas</th>
+                        <th width="15%">Valor Total</th>
+                        <th width="10%"></th>
+                    </tr>
+                </thead>
+                <tbody>                    
+                    {% for movimentacao in movimentacoes %}
+                    <tr>
+                        <td>{{ movimentacao.data | format_data }}</td>
+                        <td>{{ movimentacao.cd_tipo | format_tipo_movimentacao }}</td>
+                        <td>{{ movimentacao.acao.ticker }}</td>
+                        <td>{{ movimentacao.acao.nome }}</td>
+                        <td>{{ movimentacao.valor_unitario | format_moeda }}</td>
+                        <td>{{ movimentacao.quantidade }}</td>
+                        <td>{{ movimentacao.total_taxas | format_moeda }}</td>
+                        <td>{{ movimentacao.valor_total() | format_moeda }}</td>
+                        <td>
+                            <a class="btn-sm btn btn-info" data-toggle="tooltip" href="#" title="Detalhar"><i class="fa fa-search"></i></a>
+                            <a class="btn-sm btn btn-warning" data-toggle="tooltip" href="#" title="Alterar"><i class="fa fa-edit"></i></a>
+                            <a class="btn-sm btn btn-danger" data-toggle="tooltip" href="#" title="Excluir"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalMovimentacao" tabindex="-1" role="dialog" aria-labelledby="modalMovimentacaoLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="modalMovimentacaoLabel">Nova movimentação</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Fechar">
+                      <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+                <form method="POST" action="movimentacoes/nova" class="">
+                    <div class="modal-body">
+                        {{ form_movimentacoes.csrf_token }}
+                        <fieldset>
+                            <div class="form-group">
+                                {{ form_movimentacoes.cd_tipo.label(class="form-control-label") }} 
+                                {% if form_movimentacoes.cd_tipo.errors %} {{ form_movimentacoes.cd_tipo(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form_movimentacoes.cd_tipo.errors %} {{ erro }} {% endfor %}
+                                </div>
+                                {% else %} {{ form_movimentacoes.cd_tipo(class="form-control") }} {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form_movimentacoes.id_acao.label(class="form-control-label") }} 
+                                {% if form_movimentacoes.id_acao.errors %} {{ form_movimentacoes.id_acao(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form_movimentacoes.id_acao.errors %} {{ erro }} {% endfor %}
+                                </div>
+                                {% else %} {{ form_movimentacoes.id_acao(class="form-control") }} {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form_movimentacoes.data.label(class="form-control-label") }}
+                                {% if form_movimentacoes.data.errors %}
+                                {{ form_movimentacoes.data(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                {% for erro in form_movimentacoes.data.errors %}
+                                {{ erro }}
+                                {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form_movimentacoes.data(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{ form_movimentacoes.quantidade.label(class="form-control-label") }} {%
+                                if form_movimentacoes.quantidade.errors %} {{
+                                form_movimentacoes.quantidade(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                  {% for erro in form_movimentacoes.quantidade.errors %} {{ erro }} {%
+                                  endfor %}
+                                </div>
+                                {% else %} {{ form_movimentacoes.quantidade(class="form-control maskNumero") }} {%
+                                endif %}
+                              </div>
+                              <div class="form-group">
+                                {{ form_movimentacoes.valor_unitario.label(class="form-control-label") }}
+                                {% if form_movimentacoes.valor_unitario.errors %} {{
+                                form_movimentacoes.valor_unitario(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                  {% for erro in form_movimentacoes.valor_unitario.errors %} {{ erro }} {%
+                                  endfor %}
+                                </div>
+                                {% else %} {{ form_movimentacoes.valor_unitario(class="form-control maskMoeda") }}
+                                {% endif %}
+                              </div>
+                              <div class="form-group">
+                                {{ form_movimentacoes.total_taxas.label(class="form-control-label") }} {%
+                                if form_movimentacoes.total_taxas.errors %} {{
+                                form_movimentacoes.total_taxas(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                  {% for erro in form_movimentacoes.total_taxas.errors %} {{ erro }} {%
+                                  endfor %}
+                                </div>
+                                {% else %} {{ form_movimentacoes.total_taxas(class="form-control maskMoeda") }} {%
+                                endif %}
+                              </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        {{ form_movimentacoes.botao_submit_movimentacoes(class="btn btn-primary") }}
+                    </div>
+                </form>
+          </div>
+      </div>
+  </div>
+
+{% endblock %}

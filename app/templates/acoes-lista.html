@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1 class="h3 mb-2 text-gray-800">Ações</h1>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a accesskey="A" class="btn btn-primary" data-toggle="modal" data-target="#modalAcao" href="#" id="btnAcaoAdicionar"><i class="fa fa-plus"></i> <u>A</u>dicionar</a>
+        <a href="#" class="btn btn-secondary"><i class="fas fa-download"></i> Gerar Relatório</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered col5-direita col6-direita col7-direita col8-direita col9-direita col10-direita col11-centro col12-centro" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th width="5%">Ticker</th>
+                        <th>Nome</th>
+                        <th>Setor</th>
+                        <th>Subsetor</th>
+                        <th width="6%">Atual</th>
+                        <th width="6%">Mínino</th>
+                        <th width="6%">Máximo</th>
+                        <th width="6%">Médio Alvo</th>
+                        <th width="6%">Médio Desejado</th>
+                        <th width="6%">Data</th>
+                        <th width="5%">Recom.</th>
+                        <th width=""></th>
+                    </tr>
+                </thead>
+                <tbody>                    
+                    {% for acao in acoes %}
+                    <tr>
+                        <td>{{ acao.ticker }}</td>
+                        <td>{{ acao.nome }}</td>
+                        <td>{{ acao.setor }}</td>
+                        <td>{{ acao.sub_setor }}</td>
+                        <td>{{ acao.preco_atual | format_moeda }}</td>
+                        <td>{{ acao.preco_minimo | format_moeda }}</td>
+                        <td>{{ acao.preco_maximo | format_moeda }}</td>
+                        <td>{{ acao.preco_medio_alvo | format_moeda }}</td>
+                        <td>{{ acao.preco_medio_desejado | format_moeda }}</td>
+                        <td>{{ acao.preco_data | format_data }}</td>
+                        <td>{{ acao.recomendacao }}</td>
+                        <td>
+                            <a class="btn-sm btn btn-info" data-toggle="tooltip" href="#" title="Detalhar"><i class="fa fa-search"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalAcao" tabindex="-1" role="dialog" aria-labelledby="modalAcaoLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="modalAcaoLabel">Nova ação</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Fechar">
+                      <span aria-hidden="true">×</span>
+                  </button>
+              </div>
+                <form method="POST" action="acoes/nova" class="">
+                    <div class="modal-body">
+                        {{ form_acoes.csrf_token }}
+                        <fieldset>
+                            <div class="form-group">
+                                {{ form_acoes.ticker.label(class="form-control-label") }}
+                                {% if form_acoes.ticker.errors %}
+                                {{ form_acoes.ticker(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form_acoes.ticker.errors %}
+                                    {{ erro }}
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form_acoes.ticker(class="form-control valMaiusculo") }}
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        {{ form_acoes.botao_submit_acao(class="btn btn-primary") }}
+                    </div>
+                </form>
+          </div>
+      </div>
+  </div>
+
+{% endblock %}
