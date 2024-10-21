@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `acoes` (
     `setor` VARCHAR(255) NOT NULL,
     `sub_setor` VARCHAR(255) NOT NULL,
     `recomendacao` VARCHAR(255) NOT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)sistemasistemamovimentacoes
 );
 
 CREATE TABLE IF NOT EXISTS `movimentacoes` (
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `movimentacoes` (
     `valor_unitario` DECIMAL(10,2) NOT NULL,
     `total_taxas` DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`),
+    FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
     FOREIGN KEY (`id_acao`) REFERENCES `acoes` (`id`)
 );
 

@@ -47,7 +47,7 @@ class Movimentacoes(database.Model):
     cd_tipo = database.Column(database.Integer, nullable=False)
     quantidade = database.Column(database.Integer, nullable=False)
     valor_unitario = database.Column(database.Numeric, nullable=False)
-    total_taxas = database.Column(database.Numeric, nullable=False)
+    total_taxas = database.Column(database.Numeric, nullable=False, default=0)
 
     acao = database.relationship(
         "Acoes", foreign_keys=[id_acao], back_populates="movimentacoes"

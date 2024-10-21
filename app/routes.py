@@ -180,12 +180,19 @@ def movimentacoes_listar():
 @app.route('/movimentacoes/nova', methods=['POST'])
 @login_required
 def movimentacoes_inserir():
+    print("Formulário validado com sucesso!")
+    print("Entrou na função movimentacoes_inserir")  # Verifique se esse print aparece
     form_movimentacoes = FormMovimentacoes()
     if form_movimentacoes.validate_on_submit():
+        # Verificar o valor de total_taxas
+        print(f"Total Taxas: {form_movimentacoes.total_taxas.data}")
         movimentacoes = Movimentacoes(cd_tipo=(form_movimentacoes.cd_tipo).data,id_acao=(form_movimentacoes.id_acao.data).id, autor=current_user, data=form_movimentacoes.data.data, quantidade=form_movimentacoes.quantidade.data, valor_unitario=form_movimentacoes.valor_unitario.data, total_taxas=form_movimentacoes.total_taxas.data)
         database.session.add(movimentacoes)
         database.session.commit()
         flash('Movimentação cadastrada com sucesso', 'alert-success')
+    
+    else:
+        print("Erro na validação do formulário:", form_movimentacoes.errors)  # Exibir os erros de validação
     
     return redirect(url_for('movimentacoes_listar'))
 

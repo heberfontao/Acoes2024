@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, FloatField, DateField, EmailField,  HiddenField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from app.models import Usuarios
 from flask_login import current_user
 from wtforms_sqlalchemy.fields import QuerySelectField
@@ -52,7 +52,7 @@ class FormMovimentacoes(FlaskForm):
     cd_tipo = SelectField('Tipo',choices=CHOICE_TiposMovimentacao, validators=[DataRequired()])
     quantidade = IntegerField('Quantidade', validators=[DataRequired()])
     valor_unitario = FloatField('Valor Unitário', validators=[DataRequired()])
-    total_taxas = FloatField('Demais Taxas', validators=[DataRequired()])
+    total_taxas = FloatField('Demais Taxas')
 
     botao_submit_movimentacoes = SubmitField('Salvar')
 
